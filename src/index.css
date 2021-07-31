@@ -1,0 +1,331 @@
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Bold-Italic.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Bold-Italic.woff')
+      format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Bold.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Bold.woff')
+      format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-ExtraBold-Italic.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-ExtraBold-Italic.woff')
+      format('woff');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-ExtraBold.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-ExtraBold.woff')
+      format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Italic.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Italic.woff')
+      format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Medium-Italic.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Medium-Italic.woff')
+      format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Medium.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Medium.woff')
+      format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Regular.woff')
+      format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* $backgroundColour: #121212; */
+/* $modalBackgroundColour: #323232; */
+/* $buttonBackgroundColour: #1f1a1f; */
+/* $borderColour: #e1e1e1; */
+/* $textColour: #f1f1f1; */
+/* $textLogColour: #c1c1c1; */
+/* $brandColour: #f1a2a2; */
+
+* {
+  padding: 0px;
+  margin: 0px;
+  font-family: sans-serif;
+}
+
+.root {
+  position: 'absolute';
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* SPANS and other globals */
+.dd-username {
+  font-weight: bold;
+  padding: 6px;
+  margin: 2px;
+  color: #343434;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.dd-login-menu {
+  padding: 6px;
+}
+
+.dd-draggable-window {
+  position: absolute;
+  z-index: 2;
+  padding: 6px;
+  background-color: #343434;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.dd-party-list {
+  position: absolute;
+  left: 0;
+  top: 5%;
+  bottom: 5%;
+  z-index: 1;
+  display: flex;
+  width: 300px;
+  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.dd-party-list .dd-party-member {
+  padding: 6px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background: #343434;
+}
+
+.dd-gamelog {
+  position: absolute;
+  right: 0;
+  top: 5%;
+  bottom: 5%;
+  z-index: 1;
+  transform: translateX(0%);
+  display: flex;
+  width: 300px;
+  transition: transform 0.3s ease-out;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  background-color: #323232;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 6px;
+}
+
+.dd-chat-message {
+  padding: 6px;
+  margin: 6px 0px;
+}
+
+.roll-message {
+  padding: 6px;
+  margin: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  border: solid #e1e1e1 1px;
+}
+
+.roll-message > p {
+  font-family: 'JetBrains Mono';
+  font-weight: bold;
+}
+
+.roll-message > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.roll-message .roll,
+.roll-message .roll-total {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.roll-message .roll .result {
+  border: solid #f1f1f1 1px;
+}
+
+.roll-message .roll.nat-20 {
+  color: greenyellow;
+}
+.roll-message .roll.nat-1 {
+  color: red;
+}
+
+.roll-message .roll-type {
+  text-align: center;
+  position: relative;
+  padding: 6px;
+  display: block;
+}
+
+.roll-message .roll-type::after {
+  content: ' ';
+  width: 100%;
+  left: 0%;
+  right: 0%;
+  top: 50%;
+  height: 2px;
+  border-radius: 50%;
+  position: absolute;
+  background: linear-gradient(
+    to right,
+    #f1f1f1,
+    transparent,
+    transparent,
+    #f1f1f1
+  );
+}
+
+.roll-message .roll-singular div {
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.roll-message .roll-singular div p {
+  flex: 1 1 0;
+  text-align: center;
+  padding: 8px;
+}
+
+.roll-message .roll-multiple p {
+  padding: 6px;
+  display: block;
+}
+
+.roll-message .roll-multiple div {
+  display: flex;
+  align-items: center;
+  height: 80px;
+}
+
+.roll-message .rolls {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 80px;
+  align-items: center;
+  justify-content: center;
+}
+
+.roll-message .rolls > p {
+  flex: 1 1 0;
+  text-align: center;
+  /* padding: 6px; */
+  font-size: 14px;
+  min-width: 30px;
+  min-height: 30px;
+}
+
+.roll-message .modifier {
+  flex: 1 1 0;
+  text-align: center;
+  padding: 6px;
+  font-size: 14px;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.roll-message .result {
+  flex: 1 1 0;
+  text-align: center;
+  padding: 6px;
+  font-size: 14px;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.roll-message div p {
+  flex: 1 1 0;
+  text-align: center;
+  padding: 8px;
+}
+
+/* .roll-message .roll-lot p {
+  padding: 6px;
+  display: block;
+}
+
+.roll-message .roll-lot div {
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.roll-message .roll-lot div p {
+  flex: 1 1 0;
+  text-align: center;
+  padding: 8px;
+} */
