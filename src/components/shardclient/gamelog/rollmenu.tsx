@@ -13,11 +13,12 @@ import {
 } from '@blueprintjs/core';
 import * as CSS from 'csstype';
 
-import Communications from '../../core/communications';
+import Communications from '../../../core/communications';
 import * as ddapi from 'digi-dungeon-api';
-import { AppToaster } from '../../core/overlay';
+import { AppToaster } from '../../../core/overlay';
 
-import UI from '../../assets/ui';
+import UI from '../../../assets/ui';
+import { PopoverPosition } from '@blueprintjs/core/lib/esm/components/popover/popoverSharedProps';
 
 interface RollMenuProps {}
 
@@ -128,7 +129,7 @@ class RollMenu extends Component<RollMenuProps, RollMenuState> {
         <ControlGroup>
           <ButtonGroup>
             {this.availableDie.map((dice, index) => (
-              <Tooltip content={'d' + dice}>
+              <Tooltip content={'d' + dice} position={PopoverPosition.TOP}>
                 <Button
                   intent={dice == this.state.selectedDie ? 'success' : 'none'}
                   //text={'d' + dice}
@@ -144,20 +145,24 @@ class RollMenu extends Component<RollMenuProps, RollMenuState> {
               </Tooltip>
             ))}
           </ButtonGroup>
-          <NumericInput
-            style={numericInputStyles}
-            value={this.state.dieQuantity}
-            onValueChange={this.handleQuantityChange}
-            placeholder='Quantity'
-            min={1}
-            max={69}
-          ></NumericInput>
-          <NumericInput
-            style={numericInputStyles}
-            value={this.state.modifier}
-            onValueChange={this.handleModifierChange}
-            placeholder='Modifier'
-          ></NumericInput>
+          <Tooltip content='Die Quantity' position={PopoverPosition.TOP}>
+            <NumericInput
+              style={numericInputStyles}
+              value={this.state.dieQuantity}
+              onValueChange={this.handleQuantityChange}
+              placeholder='Quantity'
+              min={1}
+              max={69}
+            ></NumericInput>
+          </Tooltip>
+          <Tooltip content='Die Modifier' position={PopoverPosition.TOP}>
+            <NumericInput
+              style={numericInputStyles}
+              value={this.state.modifier}
+              onValueChange={this.handleModifierChange}
+              placeholder='Modifier'
+            ></NumericInput>
+          </Tooltip>
           <Button
             text='Send Roll'
             intent='primary'

@@ -4,9 +4,9 @@ import * as ddapi from 'digi-dungeon-api';
 
 import MessageList from './messagelist';
 import MessageBox from './messagebox';
-import HideButton from '../common/hidebutton';
+import HideButton from '../../common/hidebutton';
 
-import Colours from '../common/colours';
+import Colours from '../../common/colours';
 
 interface GameLogProps {}
 
@@ -49,22 +49,7 @@ class GameLog extends Component<GameLogProps, GameLogState> {
 }
 
 const GameLogStyles: CSS.Properties = {
-  position: 'absolute',
-  right: 0,
-  top: '5%',
-  bottom: '5%',
-  zIndex: 1,
-  transform: 'translateX(0%)',
-  display: 'flex',
-  width: '300px',
-  transition: 'transform 0.3s ease-out',
-  flexDirection: 'column',
-  alignItems: 'stretch',
-  justifyContent: 'stretch',
-  backgroundColor: Colours.modalBackgroundColour,
-  borderTopLeftRadius: '10px',
-  borderBottomLeftRadius: '10px',
-  padding: '6px'
+  transform: 'translateX(0%)'
 };
 
 const GameLogHiddenStyles: CSS.Properties = {

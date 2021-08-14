@@ -25,7 +25,8 @@ class Biscuits {
         port: Cookies.get('comms/uri/port')
       },
       socket: {
-        protocol: Cookies.get('comms/socket/protocol')
+        protocol: Cookies.get('comms/socket/protocol'),
+        connected: Cookies.get('comms/socket/connected')
       },
       shard: {
         id: Cookies.get('comms/shard/id')
@@ -41,7 +42,7 @@ class Biscuits {
     this.setBiscuit('comms/uri/' + key, value);
   }
 
-  setSocketBiscuit(key: 'protocol', value: string) {
+  setSocketBiscuit(key: 'protocol' | 'connected', value: string) {
     this.setBiscuit('comms/socket/' + key, value);
   }
 
@@ -62,6 +63,7 @@ interface CommunicationBiscuits {
   };
   socket?: {
     protocol?: string;
+    connected?: string;
   };
   shard?: {
     id?: string;

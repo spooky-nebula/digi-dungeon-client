@@ -6,9 +6,9 @@ import Communications from '../communications';
 import { AppToaster } from '../overlay';
 
 interface AuthenticationEvents {
-  login: (data: ddapi.Auth.User.AuthRequestResponse) => void;
-  register: (data: ddapi.Auth.User.AuthRequestResponse) => void;
-  logout: (data: ddapi.Auth.User.AuthRequestResponse) => void;
+  login: (data: ddapi.Auth.User.AuthResponse) => void;
+  register: (data: ddapi.Auth.User.AuthResponse) => void;
+  logout: (data: ddapi.Auth.User.AuthResponse) => void;
 }
 
 declare interface Authentication {

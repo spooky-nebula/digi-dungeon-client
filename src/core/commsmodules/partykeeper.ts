@@ -45,9 +45,15 @@ class PartyKeeper extends EventEmitter {
     }
 
     this.partyList = partyMembers;
-    this.emit('party-resync', this.partyList);
+    this.emit('party-resync', partyMembers);
 
-    console.log('[Party Keeper] Initialization Done');
+    console.log('[Party Keeper]', 'Initialization Done');
+    console.log(
+      '[Party Keeper]',
+      'Synced',
+      partyMembers.length,
+      'Party Members'
+    );
 
     return true;
   }

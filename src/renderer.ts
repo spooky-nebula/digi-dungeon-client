@@ -26,12 +26,13 @@
  * ```
  */
 
-import './index.css';
+import './styles/index.css';
 import 'normalize.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import './app';
 
 console.log(
-  '👋 This message is being logged by "renderer.js", included via webpack'
+  '👋 This message is being logged by "renderer.js", included via webpack.',
+  'This means that the app script has loaded.'
 );

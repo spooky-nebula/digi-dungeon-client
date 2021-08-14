@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as CSS from 'csstype';
 
-import { HotkeysProvider, Text } from '@blueprintjs/core';
-
 import Colours from './components/common/colours';
 
-import GameLog from './components/gamelog/gamelog';
 import LoginMenu from './components/authentication/loginmenu';
 import Communications from './core/communications';
-import PartyList from './components/partylist/partylist';
-import Draggable from './components/common/draggable';
 import Input from './core/input';
-
+import ShardClient from './shardclient';
+import { Icon, Tab, TabId, Tabs, Tooltip } from '@blueprintjs/core';
+import HomebrewClient from './homebrewclient';
+import UI from './assets/ui';
+import NavBar, { NavBarTab } from './components/common/navbar';
 // Shitstain Debug Garbage
 //import Communications from './core/communications';
 //
@@ -29,6 +28,7 @@ function render() {
 
 interface AppState {
   epicTimeInitiated: boolean;
+  currentTab: string;
 }
 
 class App extends Component<{}, AppState> {
@@ -41,6 +41,8 @@ class App extends Component<{}, AppState> {
 
     this.updateEpicTime = this.updateEpicTime.bind(this);
     this.updateEpicTime();
+
+    this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   updateEpicTime() {
@@ -50,7 +52,8 @@ class App extends Component<{}, AppState> {
   }
 
   state = {
-    epicTimeInitiated: false
+    epicTimeInitiated: false,
+    currentTab: 'shard_client'
   };
 
   componentDidMount() {
@@ -59,22 +62,60 @@ class App extends Component<{}, AppState> {
 
   render() {
     return (
-      <div style={AppStyles} className='bp4-dark'>
+      <div className='bp4-dark dd-app'>
         {this.LoginMenu}
-        {this.state.epicTimeInitiated && this.AppContents}
+        {this.state.epicTimeInitiated &&
+          this.AppContents(this.state.currentTab)}
       </div>
     );
   }
 
-  /* <NavBar></NavBar> */
+  renderShardClient = (display: boolean) => (
+    <div className={'dd-client shard-client ' + (display && 'hidden')}>
+      <ShardClient></ShardClient>
+    </div>
+  );
 
-  AppContents = (
-    <HotkeysProvider>
-      <div>
-        <PartyList></PartyList>
-        <GameLog></GameLog>
-      </div>
-    </HotkeysProvider>
+  renderHomebrewClient = (display: boolean) => (
+    <div className={'dd-client homebrew-client ' + (display && 'hidden')}>
+      <HomebrewClient></HomebrewClient>
+    </div>
+  );
+
+  tabs = [
+    {
+      tabId: 'shard_client',
+      tooltip: 'Shard Client',
+      icon: UI.get('icon/single_dice_small').toString(),
+      content: this.renderShardClient
+    },
+    {
+      tabId: 'homebrew_client',
+      tooltip: 'Homebrew Client',
+      icon: UI.get('icon/homebrew_simple').toString(),
+      content: this.renderHomebrewClient
+    }
+  ] as NavBarTab[];
+
+  handleTabChange = (tabId: string) => {
+    this.setState({ currentTab: tabId });
+  };
+
+  AppContents = (currentTab: string) => (
+    <div className='dd-content'>
+      <NavBar
+        onChange={this.handleTabChange}
+        tabs={this.tabs}
+        initialTab={'shard_client'}
+      ></NavBar>
+      {this.tabs.map((tab) => {
+        if (tab.tabId == currentTab) {
+          return tab.content(false);
+        } else {
+          return tab.content(true);
+        }
+      })}
+    </div>
   );
 
   LoginMenu = (
@@ -83,16 +124,5 @@ class App extends Component<{}, AppState> {
     </div>
   );
 }
-
-const AppStyles: CSS.Properties = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: Colours.backgroundColour,
-  color: Colours.textColour,
-  overflow: 'hidden'
-};
 
 render();

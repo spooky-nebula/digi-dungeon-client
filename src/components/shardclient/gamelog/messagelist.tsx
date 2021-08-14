@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as CSS from 'csstype';
 
 import * as ddapi from 'digi-dungeon-api';
-import Communications from '../../core/communications';
+import Communications from '../../../core/communications';
 
 import Message from './message';
 import RollMessage from './rollmessage';
@@ -10,10 +10,10 @@ import Event, {
   ChatMessageEvent,
   DiceRollEvent
 } from 'digi-dungeon-api/dist/event';
-import Colours from '../common/colours';
+import Colours from '../../common/colours';
 
 import { Text } from '@blueprintjs/core';
-import Username from '../common/username';
+import Username from '../../common/username';
 
 interface MessageListProps {}
 
@@ -118,7 +118,7 @@ class MessageList extends Component<MessageListProps, MessageListState> {
 
   render() {
     return (
-      <ul style={MessagesStyles}>
+      <ul className='dd-message-list' style={MessagesStyles}>
         {this.renderMessages()}
         <div
           style={{ float: 'left', clear: 'both' }}

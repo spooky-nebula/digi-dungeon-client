@@ -17,6 +17,7 @@ interface DraggableProps {
   // Initial Position
   position?: Vector2;
   isOpen?: boolean;
+  windowTitle?: string;
   // Delete component on close
   removeOnClose?: boolean;
   closeHandler?: React.MouseEventHandler<HTMLButtonElement>;
@@ -99,7 +100,7 @@ class Draggable extends Component<DraggableProps, DraggableState> {
   }
 
   render() {
-    let { isOpen, closeHandler } = this.props;
+    let { isOpen, closeHandler, windowTitle } = this.props;
     return (
       <div
         onMouseMove={this.handleDrag}
@@ -110,13 +111,15 @@ class Draggable extends Component<DraggableProps, DraggableState> {
           top: this.state.position.y + 'px'
         }}
       >
-        <ControlGroup>
+        <ControlGroup className='dd-window-titlebar'>
+          <p className='dd-window-title'>{windowTitle}</p>
           <Button
             //ref={this.buttonElement}
             onMouseDown={this.handleDragStart}
             onMouseUp={this.handleDragEnd}
             icon='move'
             intent={this.state.dragging ? 'success' : 'none'}
+            fill
           ></Button>
           <Button
             onClick={closeHandler || this.handleClose}

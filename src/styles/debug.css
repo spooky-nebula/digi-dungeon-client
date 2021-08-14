@@ -1,0 +1,11 @@
+.debug_panel {
+  padding: 6px;
+  margin-top: 6px;
+  background-color: #323232;
+}
+
+.debug-table {
+  width: 600px;
+  max-height: 400px;
+  overflow: scroll;
+}

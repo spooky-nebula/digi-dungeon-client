@@ -9,7 +9,7 @@ import {
   TextArea
 } from '@blueprintjs/core';
 
-import Communications from '../../core/communications';
+import Communications from '../../../core/communications';
 
 import * as ddapi from 'digi-dungeon-api';
 import RollMenu from './rollmenu';
@@ -65,6 +65,9 @@ class MessageBox extends Component<MessageBoxProps, MessageBoxState> {
   }
 
   sendMessage(text: string) {
+    if (text.trim() == '') {
+      return;
+    }
     let event = new ddapi.Event.ChatMessageEvent(Communications.socket.id);
     event.text = text;
 
@@ -78,7 +81,7 @@ class MessageBox extends Component<MessageBoxProps, MessageBoxState> {
 
   render() {
     return (
-      <div style={MessageBoxStyles}>
+      <div className='dd-message-box'>
         <ButtonGroup>
           <input
             className={Classes.INPUT + ' ' + Classes.FILL}

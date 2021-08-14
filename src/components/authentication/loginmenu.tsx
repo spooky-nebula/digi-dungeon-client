@@ -20,8 +20,8 @@ interface LoginMenuState {
   hostname: string;
   protocol: string;
   port: string;
-  shardId: string;
-  shardPass: string;
+  //shardId: string;
+  //shardPass: string;
   username: string;
   password: string;
 }
@@ -34,7 +34,8 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleHostnameChange = this.handleHostnameChange.bind(this);
     this.handlePortChange = this.handlePortChange.bind(this);
-    this.handleShardIdChange = this.handleShardIdChange.bind(this);
+    //this.handleShardIdChange = this.handleShardIdChange.bind(this);
+    //this.handleShardPassChange = this.handleShardPassChange.bind(this);
 
     this.handleLoginButton = this.handleLoginButton.bind(this);
 
@@ -53,8 +54,8 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
     hostname: 'localhost',
     port: '8080',
     protocol: 'http://',
-    shardId: '',
-    shardPass: '',
+    //shardId: '',
+    //shardPass: '',
     username: '',
     password: ''
   };
@@ -122,12 +123,12 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
     this.setState({ port: value });
   }
 
-  private handleShardIdChange(value: string) {
-    this.setState({ shardId: value });
-  }
-  private handleShardPassChange(value: string) {
-    this.setState({ shardPass: value });
-  }
+  //private handleShardIdChange(value: string) {
+  //  this.setState({ shardId: value });
+  //}
+  //private handleShardPassChange(value: string) {
+  //  this.setState({ shardPass: value });
+  //}
   private handleProtocolChange(value: string) {
     this.setState({ protocol: value });
   }
@@ -145,9 +146,9 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
     if (this.state.port.trim() == '') {
       return false;
     }
-    if (this.state.shardId.trim() == '') {
-      return false;
-    }
+    //if (this.state.shardId.trim() == '') {
+    //  return false;
+    //}
     if (this.state.showLogin) {
       this.login();
     } else {
@@ -159,7 +160,7 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
     Communications.communicationData.socket.protocol = this.state.protocol;
     Communications.communicationData.uri.hostname = this.state.hostname;
     Communications.communicationData.uri.port = this.state.port;
-    Communications.communicationData.shard.id = this.state.shardId;
+    //Communications.communicationData.shard.id = this.state.shardId;
   }
 
   login() {
@@ -183,6 +184,7 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
       <Dialog
         className='dd-login-menu bp4-dark'
         isOpen={this.state.showMenu}
+        title='User Login'
         usePortal={true}
         autoFocus={true}
         enforceFocus={true}
@@ -234,7 +236,7 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
               }}
             />
           </ControlGroup>
-          <ControlGroup fill>
+          {/* <ControlGroup fill>
             <input
               type='password'
               className='bp4-input'
@@ -254,7 +256,7 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
               }}
               disabled
             />
-          </ControlGroup>
+          </ControlGroup> */}
           <ControlGroup fill>
             <Button
               intent='warning'

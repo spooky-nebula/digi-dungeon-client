@@ -1,8 +1,8 @@
 import { io, ManagerOptions, Socket, SocketOptions } from 'socket.io-client';
-import EventKeeper from './commsmodules/eventkeeper';
 import * as ddapi from 'digi-dungeon-api';
 import { AppToaster } from './overlay';
 import Authentication from './commsmodules/authentication';
+import EventKeeper from './commsmodules/eventkeeper';
 import PartyKeeper from './commsmodules/partykeeper';
 import Cacher from './commsmodules/cacher';
 import Biscuits from './commsmodules/biscuits';
@@ -37,9 +37,9 @@ class Communications {
     this.cacher = new Cacher();
 
     this.authentication = new Authentication();
-    this.authentication.on('login', (data) => {
-      this.connect();
-    });
+    //this.authentication.on('login', (data) => {
+    //  this.connect();
+    //});
   }
 
   static start() {
@@ -48,28 +48,25 @@ class Communications {
 
   static connect() {
     AppToaster.show({ message: 'Connecting to Shard', intent: 'primary' });
-    this.socket = io(
+    let connectionString =
       this.communicationData.socket.protocol +
-        this.communicationData.uri.hostname +
-        ':' +
-        this.communicationData.uri.port,
-      {
-        withCredentials: true,
-        extraHeaders: {
-          'digi-dungeon-server': 'cockalicious'
-        }
+      this.communicationData.uri.hostname +
+      ':' +
+      this.communicationData.uri.port;
+
+    this.socket = io(connectionString, {
+      withCredentials: true,
+      extraHeaders: {
+        'digi-dungeon-server': 'cockalicious'
       }
-    );
+    });
 
     this.socket.on('connect', () => {
       if (this.authentication.loggedIn) {
-        this.socket.emit(
-          'handshake',
-          new ddapi.Auth.Handshake.HandshakeData(
-            this.authentication.token,
-            this.communicationData.shard.id
-          )
-        );
+        this.socket.emit('handshake', {
+          token: this.authentication.token,
+          shardID: this.communicationData.shard.id
+        } as ddapi.Auth.Handshake.HandshakeData);
       }
     });
 
@@ -77,6 +74,8 @@ class Communications {
       AppToaster.show({ message: 'Connected to Shard', intent: 'success' });
 
       this.resetKeepers(syncData);
+
+      this.biscuits.setSocketBiscuit('connected', 'true');
     });
 
     this.socket.on('handshake-error', (errorMessage: string) => {

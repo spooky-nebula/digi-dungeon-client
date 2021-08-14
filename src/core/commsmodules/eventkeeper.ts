@@ -12,7 +12,8 @@ interface EventKeeperEvents {
   'drawing-clear': (eventData: ddapi.Event.DrawingClearEvent) => void;
   'drawing-undo': (eventData: ddapi.Event.DrawingUndoEvent) => void;
   'entity-move': (eventData: ddapi.Event.EntityMoveEvent) => void;
-  'entity-create': (eventData: ddapi.Event.EntityCreateEvent) => void;
+  'entity-create': (eventData: ddapi.Event.EntityCreateEvent<{}>) => void;
+  'entity-modify': (eventData: ddapi.Event.EntityModifyEvent<{}>) => void;
   'entity-remove': (eventData: ddapi.Event.EntityRemoveEvent) => void;
   'entity-grant-premission': (
     eventData: ddapi.Event.EntityGrantPermissionEvent
@@ -79,6 +80,7 @@ class EventKeeper extends EventEmitter {
     for (let i = 0; i < pastEvents.length; i++) {
       const eventData = pastEvents[i];
       this.decideAndEmit(eventData);
+      this.recordedEvents.push(eventData);
     }
   }
 

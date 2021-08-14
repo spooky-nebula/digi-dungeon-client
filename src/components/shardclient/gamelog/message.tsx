@@ -3,8 +3,9 @@ import * as CSS from 'csstype';
 
 import { Text } from '@blueprintjs/core';
 
-import Username from '../common/username';
-import Communications from '../../core/communications';
+import Username from '../../common/username';
+import Communications from '../../../core/communications';
+import UserText from '../../common/usertext';
 
 interface MessageProps {
   sender: string;
@@ -42,7 +43,8 @@ class Message extends Component<MessageProps, MessageState> {
 
     return (
       <Text className={'dd-chat-message ' + (loading && 'bp4-skeleton')}>
-        <Username userId={sender}></Username>:{text}
+        <Username userId={sender}></Username>
+        <UserText userId={sender}>{text}</UserText>
       </Text>
     );
   }

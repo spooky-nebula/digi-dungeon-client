@@ -1,7 +1,7 @@
 import { Text, Icon, Button, ControlGroup, Tooltip } from '@blueprintjs/core';
 import React, { Component } from 'react';
-import Communications from '../../core/communications';
-import Username from '../common/username';
+import Communications from '../../../core/communications';
+import Username from '../../common/username';
 
 interface PartyMemberProps {
   sender: string;
@@ -18,7 +18,7 @@ class PartyMember extends Component<PartyMemberProps, PartyMemberState> {
     const { sender } = this.props;
     return (
       <div className={'dd-party-member'}>
-        <ControlGroup fill>
+        <ControlGroup>
           <Username userId={sender}></Username>
           <Tooltip content='Character Sheet'>
             <Button fill icon='book'></Button>

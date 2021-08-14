@@ -2,7 +2,7 @@ import * as ddapi from 'digi-dungeon-api';
 import { AppToaster } from './overlay';
 import { request, IncomingMessage } from 'http';
 import {
-  AuthRequestResponse,
+  AuthResponse,
   UserLoginData,
   UserLogoutData,
   UserRegisterData
@@ -14,7 +14,7 @@ import * as qs from 'query-string';
 function makeAuthRequest(
   userAuthData: UserLoginData | UserRegisterData | UserLogoutData,
   path: '/login' | '/register' | '/logout'
-): Promise<AuthRequestResponse> {
+): Promise<AuthResponse> {
   return new Promise((resolve, reject) => {
     makeJSONRequest(
       Communications.communicationData.uri.hostname,
@@ -24,7 +24,7 @@ function makeAuthRequest(
       userAuthData
     )
       .then((responseJSON) => {
-        let auth = new AuthRequestResponse(false, '');
+        let auth = new AuthResponse(false, '');
         resolve(Object.assign(auth, responseJSON));
       })
       .catch(() => {

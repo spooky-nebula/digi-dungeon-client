@@ -1,3 +1,5 @@
+@import url('./debug.css');
+
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Bold-Italic.woff2')
@@ -100,18 +102,91 @@
   font-family: sans-serif;
 }
 
-.root {
-  position: 'absolute';
+#root {
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.dd-app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #121212;
+  color: #f1f1f1;
+  overflow: inherit;
+}
+
+.dd-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.dd-tablist {
+  display: block;
+  position: relative;
+  z-index: 21;
+  padding: 4px 4px 0 4px;
+  flex: 0 1 30px;
+  border-width: 0px;
+  border-bottom-width: 2px;
+  border-style: solid;
+  border-color: white;
+  background-color: #121212;
+}
+
+.dd-tablist .dd-tab {
+  display: block;
+  padding: 8px 8px 4px 8px;
+  border-color: transparent;
+  filter: opacity(0.5);
+  border-radius: 6px 6px 0 0;
+  border-width: 2px;
+  border-bottom-width: 2px;
+  border-style: solid;
+  align-items: center;
+  transform: translateY(+2px);
+}
+
+.dd-tablist .dd-tab img {
+  margin: 0px;
+  padding: 0px;
+}
+
+.dd-tablist .dd-tab:focus {
+  outline: none !important;
+}
+
+.dd-tablist .dd-selected-tab {
+  filter: opacity(1);
+  border-color: white;
+  border-bottom-color: #121212;
+}
+
+.dd-client {
+  position: relative;
+  flex: 1 1 0px;
+}
+
+.dd-client.shard-client {
+  overflow: hidden;
+}
+
+.dd-client.homebrew-client {
+  overflow: auto;
 }
 
 /* SPANS and other globals */
 .dd-username {
   font-weight: bold;
-  padding: 6px;
+  padding: 4px;
   margin: 2px;
   color: #343434;
   background-image: linear-gradient(
@@ -121,20 +196,58 @@
   );
 }
 
+.dd-usertext {
+  padding: 4px;
+  margin: 2px;
+  line-height: 26px;
+  font-size: 16px;
+  display: block;
+  border: solid #e1e1e1 2px;
+}
+
+.hidden {
+  display: none;
+}
+
 .dd-login-menu {
   padding: 6px;
 }
 
 .dd-draggable-window {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   z-index: 2;
   padding: 6px;
+  border-radius: 6px;
   background-color: #343434;
   background-image: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.05),
     rgba(255, 255, 255, 0)
   );
+  min-width: 220px;
+}
+
+.dd-window-titlebar {
+  flex: 1 1 200px;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: center !important;
+}
+
+.dd-window-title {
+  flex: 1 1 136px;
+  text-align: center;
+  display: block;
+  font-size: 16px;
+  margin: auto;
+}
+
+.dd-window-titlebar > button {
+  flex: 0 1 32px;
 }
 
 .dd-party-list {
@@ -159,6 +272,20 @@
   background: #343434;
 }
 
+.dd-party-list .dd-party-member .dd-username {
+  flex: 1 1 100px;
+}
+
+.dd-renderer {
+  /* background-color: #f8f5da; */
+  background-color: #121212;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(112, 111, 57, 0),
+    rgba(163, 145, 106, 0.05)
+  );
+}
+
 .dd-gamelog {
   position: absolute;
   right: 0;
@@ -173,24 +300,51 @@
   align-items: stretch;
   justify-content: stretch;
   background-color: #323232;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0)
+  );
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  padding: 6px;
+}
+
+.dd-message-list {
+  flex: 1 1 0;
+  left: 0;
+  right: 0;
+  margin: 2.5%;
+  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .dd-chat-message {
-  padding: 6px;
+  padding: 4px;
+  margin: 6px 0px;
+}
+
+.dd-message-box {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dd-roll-message {
+  padding: 4px;
   margin: 6px 0px;
 }
 
 .roll-message {
-  padding: 6px;
-  margin: 6px;
+  padding: 4px;
+  margin: 2px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   position: relative;
-  border: solid #e1e1e1 1px;
+  border: solid #e1e1e1 2px;
 }
 
 .roll-message > p {
@@ -198,10 +352,14 @@
   font-weight: bold;
 }
 
-.roll-message > div {
+.roll-message .roll-map {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.roll-message .roll-map > * {
+  flex: 1 1 0;
 }
 
 .roll-message .roll,
@@ -211,7 +369,7 @@
   background-repeat: no-repeat;
 }
 
-.roll-message .roll .result {
+.roll-message .result {
   border: solid #f1f1f1 1px;
 }
 
