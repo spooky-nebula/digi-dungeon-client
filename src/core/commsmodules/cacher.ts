@@ -23,6 +23,7 @@ class Cacher {
         let timeout = setTimeout(() => {
           this.getUser(userId).then((userData) => {
             resolve(userData);
+            clearTimeout(timeout);
           });
         }, 200);
       } else {
