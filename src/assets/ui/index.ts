@@ -81,6 +81,8 @@ import dice_single_svg from './icon/dice_single.svg';
 import dice_single_small_svg from './icon/dice_single_small.svg';
 import homebrew from './icon/homebrew.svg';
 import homebrew_simple from './icon/homebrew_simple.svg';
+import mapeditor from './icon/mapeditor.svg';
+import mapeditor_simple from './icon/mapeditor_simple.svg';
 
 const UI: Map<string, Object> = new Map([
   // Singles
@@ -110,7 +112,9 @@ const UI: Map<string, Object> = new Map([
   ['icon/single_dice', dice_single_svg],
   ['icon/single_dice_small', dice_single_small_svg],
   ['icon/homebrew', homebrew],
-  ['icon/homebrew_simple', homebrew_simple]
+  ['icon/homebrew_simple', homebrew_simple],
+  ['icon/mapeditor', mapeditor],
+  ['icon/mapeditor_simple', mapeditor_simple]
 ]);
 
 export default UI;

@@ -12,6 +12,7 @@ import { Icon, Tab, TabId, Tabs, Tooltip } from '@blueprintjs/core';
 import HomebrewClient from './homebrewclient';
 import UI from './assets/ui';
 import NavBar, { NavBarTab } from './components/common/navbar';
+import MapEditorClient from './mapeditorclient';
 // Shitstain Debug Garbage
 //import Communications from './core/communications';
 //
@@ -82,6 +83,12 @@ class App extends Component<{}, AppState> {
     </div>
   );
 
+  renderMapEditorClient = (display: boolean) => (
+    <div className={'dd-client mapeditor-client ' + (display && 'hidden')}>
+      <MapEditorClient></MapEditorClient>
+    </div>
+  );
+
   tabs = [
     {
       tabId: 'shard_client',
@@ -94,6 +101,12 @@ class App extends Component<{}, AppState> {
       tooltip: 'Homebrew Client',
       icon: UI.get('icon/homebrew_simple').toString(),
       content: this.renderHomebrewClient
+    },
+    {
+      tabId: 'mapeditor_client',
+      tooltip: 'Map Editor Client',
+      icon: UI.get('icon/mapeditor_simple').toString(),
+      content: this.renderMapEditorClient
     }
   ] as NavBarTab[];
 
