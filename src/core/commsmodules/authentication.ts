@@ -48,10 +48,17 @@ class Authentication extends EventEmitter {
   login(username: string, password: string) {
     let data = new ddapi.Auth.User.UserLoginData(username, password);
     makeAuthRequest(data, '/login').then((response) => {
-      AppToaster.show({
-        message: 'Logged in',
-        intent: 'success'
-      });
+      if (response.success) {
+        AppToaster.show({
+          message: 'Logged in',
+          intent: 'success'
+        });
+      } else {
+        AppToaster.show({
+          message: response.message,
+          intent: 'warning'
+        });
+      }
 
       this.emit('login', response);
       this.loggedIn = response.success;
@@ -61,7 +68,7 @@ class Authentication extends EventEmitter {
         'loggedIn',
         this.loggedIn ? 'true' : 'false'
       );
-      Communications.biscuits.setAuthBiscuit('token', this.token);
+      Communications.biscuits.setAuthBiscuit('token', this.token || '');
       Communications.biscuits.setShardBiscuit(
         'id',
         Communications.communicationData.shard.id

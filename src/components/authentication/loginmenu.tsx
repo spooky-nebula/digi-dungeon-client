@@ -71,11 +71,6 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
         this.setState({
           showMenu: false
         });
-      } else {
-        AppToaster.show({
-          message: data.token,
-          intent: 'warning'
-        });
       }
     });
 
