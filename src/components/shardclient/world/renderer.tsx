@@ -1,47 +1,77 @@
 import React, { Component } from 'react';
 import * as THREE from 'three';
 
+import Communications from '../../../core/communications';
+import { constructGeometry } from '../../../core/canvasmodules/mapgeometry';
+
 class Renderer extends Component {
   mount: HTMLDivElement;
+  renderer: any;
 
   constructor(props: any) {
     super(props);
+    this.renderer = {}
   }
 
-  componentDidMount() {
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(
+  setUpThreeJs(): void {
+    this.renderer.scene = new THREE.Scene();
+    this.renderer.camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
       0.1,
-      1000
+      10000
     );
-    var renderer = new THREE.WebGLRenderer({ alpha: true });
+    this.renderer.renderer = new THREE.WebGLRenderer({ alpha: true });
     // WARNING: THE 46 is the pixels is from the navbar height
-    renderer.setSize(window.innerWidth, window.innerHeight - 46);
-    this.mount.appendChild(renderer.domElement);
+    this.renderer.renderer.setSize(window.innerWidth, window.innerHeight - 46);
+    this.renderer.renderer.shadowMap.enabled = true;
+    this.renderer.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.renderer.outputEncoding = THREE.sRGBEncoding;
+
+    window.addEventListener("resize", () => {
+      this.renderer.renderer.setSize( window.innerWidth, window.innerHeight - 46 );
+      this.renderer.camera.aspect = window.innerWidth / window.innerHeight;
+      this.renderer.camera.updateProjectionMatrix();
+    });
+
+    this.mount.appendChild(this.renderer.renderer.domElement);
+
+    this.renderer.light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+    this.renderer.scene.add(this.renderer.light);
+    this.renderer.camera.position.z = 4;
+    this.renderer.camera.position.y = 4;
+    this.renderer.camera.lookAt(0, 0, 0);
+
+    this.animate();
+  }
+
+  animate(): void {
+    const animate = this.animate.bind(this)
+    requestAnimationFrame(animate);
+
+    for (let child of this.renderer.scene.children) {
+      if (child.constructor.name == "Mesh") {
+        // child.rotation.y += 0.05;
+      }
+    }
+
+    this.renderer.renderer.render(this.renderer.scene, this.renderer.camera);
+  }
+
+  componentDidMount(): void {
+
+    Communications.mapKeeper.on("map-resync", (event) => {
+      this.setUpThreeJs()
+
+      let objects = constructGeometry(event);
+
+      for (let elem of objects) {
+        this.renderer.scene.add(elem);
+      }
+    })
 
     // TODO: CONSTRUCT MAP GEOMETRY AND REPLACE THIS
     // This should be done in mapgeometry.ts
-
-    //var geometry = new THREE.BoxGeometry(1, 1, 1);
-    //var geometry = new THREE.TorusGeometry(0.6, 0.4, 6, 6);
-    var geometry = new THREE.BufferGeometry();
-    //let geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
-    var material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-    var cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-    const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
-    scene.add(light);
-    camera.position.z = 2;
-    var animate = function () {
-      requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-      cube.rotation.z += 0.01;
-      renderer.render(scene, camera);
-    };
-    animate();
   }
 
   render() {
