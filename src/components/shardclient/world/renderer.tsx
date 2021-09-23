@@ -21,8 +21,12 @@ class Renderer extends Component {
     renderer.setSize(window.innerWidth, window.innerHeight - 46);
     this.mount.appendChild(renderer.domElement);
 
+    // TODO: CONSTRUCT MAP GEOMETRY AND REPLACE THIS
+    // This should be done in mapgeometry.ts
+
     //var geometry = new THREE.BoxGeometry(1, 1, 1);
-    var geometry = new THREE.TorusGeometry(0.6, 0.4, 6, 6);
+    //var geometry = new THREE.TorusGeometry(0.6, 0.4, 6, 6);
+    var geometry = new THREE.BufferGeometry();
     //let geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
     var material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
     var cube = new THREE.Mesh(geometry, material);
