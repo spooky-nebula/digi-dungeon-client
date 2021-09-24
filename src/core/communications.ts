@@ -7,6 +7,9 @@ import PartyKeeper from './commsmodules/partykeeper';
 import MapKeeper from './commsmodules/mapkeeper';
 import Cacher from './commsmodules/cacher';
 import Biscuits from './commsmodules/biscuits';
+import Protobuf from 'protobufjs';
+
+import userDataProto from 'digi-dungeon-protobuf/src/auth/userdata.proto';
 
 class Communications {
   public static socket: Socket;
@@ -17,6 +20,7 @@ class Communications {
   public static biscuits: Biscuits;
   public static cacher: Cacher;
   public static communicationData: CommunicationData;
+  public static protoRoot: Protobuf.Root;
 
   static init() {
     this.biscuits = new Biscuits();
@@ -33,6 +37,13 @@ class Communications {
         id: this.biscuits.comms.shard.id || ''
       }
     };
+
+    Protobuf.load(userDataProto, (err, root) => {
+      if (err)
+        console.error(err);
+
+      this.protoRoot = root;
+    });
 
     this.eventKeeper = new EventKeeper();
     this.partyKeeper = new PartyKeeper();

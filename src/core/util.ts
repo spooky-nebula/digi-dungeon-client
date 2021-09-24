@@ -14,18 +14,19 @@ import * as qs from 'query-string';
 function makeAuthRequest(
   userAuthData: UserLoginData | UserRegisterData | UserLogoutData,
   path: '/login' | '/register' | '/logout'
-): Promise<AuthResponse> {
+): Promise<any> {
   return new Promise((resolve, reject) => {
-    makeJSONRequest(
+    makeRequest(
       Communications.communicationData.uri.hostname,
       Communications.communicationData.uri.port,
       path,
       'POST',
       userAuthData
     )
-      .then((responseJSON) => {
-        let auth = new AuthResponse(false, '');
-        resolve(Object.assign(auth, responseJSON));
+      .then((response) => {
+        // let auth = new AuthResponse(false, '');
+        // resolve(Object.assign(auth, responseJSON));
+        resolve(response);
       })
       .catch(() => {
         reject();

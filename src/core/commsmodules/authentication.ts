@@ -4,6 +4,7 @@ import * as ddapi from 'digi-dungeon-api';
 import { makeAuthRequest, makeRequest } from '../util';
 import Communications from '../communications';
 import { AppToaster } from '../overlay';
+import { AuthResponse } from 'digi-dungeon-api/dist/auth/userdata';
 
 interface AuthenticationEvents {
   login: (data: ddapi.Auth.User.AuthResponse) => void;
@@ -48,21 +49,26 @@ class Authentication extends EventEmitter {
   login(username: string, password: string) {
     let data = new ddapi.Auth.User.UserLoginData(username, password);
     makeAuthRequest(data, '/login').then((response) => {
-      if (response.success) {
+      const Message = Communications.protoRoot.lookupType("AuthResponse");
+      const decoded: {[id: string]: any} = Message.decode(JSON.parse(response).data);
+      const message = new AuthResponse(decoded.success, decoded.token, decoded.message);
+
+      if (message.success) {
         AppToaster.show({
           message: 'Logged in',
           intent: 'success'
         });
       } else {
         AppToaster.show({
-          message: response.message,
+          message: message.message,
           intent: 'warning'
         });
       }
 
-      this.emit('login', response);
-      this.loggedIn = response.success;
-      this.token = response.token;
+      this.emit('login', message);
+
+      this.loggedIn = message.success;
+      this.token = message.token;
 
       Communications.biscuits.setAuthBiscuit(
         'loggedIn',
