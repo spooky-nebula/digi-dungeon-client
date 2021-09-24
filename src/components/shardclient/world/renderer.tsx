@@ -23,15 +23,19 @@ class Renderer extends Component {
     );
     this.renderer.renderer = new THREE.WebGLRenderer({ alpha: true });
     // WARNING: THE 46 is the pixels is from the navbar height
-    this.renderer.renderer.setSize(window.innerWidth, window.innerHeight - 46);
+    this.renderer.renderer.setSize(
+      this.mount.clientWidth, 
+      this.mount.clientHeight
+    );
     this.renderer.renderer.shadowMap.enabled = true;
     this.renderer.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.renderer.outputEncoding = THREE.sRGBEncoding;
 
     window.addEventListener("resize", () => {
-      this.renderer.renderer.setSize( window.innerWidth, window.innerHeight - 46 );
-      this.renderer.camera.aspect = window.innerWidth / window.innerHeight;
-      this.renderer.camera.updateProjectionMatrix();
+      this.renderer.renderer.setSize(
+        this.mount.clientWidth, 
+        this.mount.clientHeight
+      );
     });
 
     this.mount.appendChild(this.renderer.renderer.domElement);
