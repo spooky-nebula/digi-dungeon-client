@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import Communications from '../../../core/communications';
 import { constructGeometry } from '../../../core/canvasmodules/mapgeometry';
+import { Camera } from '../../../core/canvasmodules/camera';
 
 class Renderer extends Component {
   mount: HTMLDivElement;
@@ -10,19 +11,18 @@ class Renderer extends Component {
 
   constructor(props: any) {
     super(props);
-    this.renderer = {}
+    this.renderer = {};
   }
 
   setUpThreeJs(): void {
     this.renderer.scene = new THREE.Scene();
-    this.renderer.camera = new THREE.PerspectiveCamera(
+    this.renderer.camera = new Camera(
       75,
       window.innerWidth / window.innerHeight,
       0.1,
       10000
     );
     this.renderer.renderer = new THREE.WebGLRenderer({ alpha: true });
-    // WARNING: THE 46 is the pixels is from the navbar height
     this.renderer.renderer.setSize(
       this.mount.clientWidth, 
       this.mount.clientHeight
@@ -42,9 +42,6 @@ class Renderer extends Component {
 
     this.renderer.light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
     this.renderer.scene.add(this.renderer.light);
-    this.renderer.camera.position.z = 4;
-    this.renderer.camera.position.y = 4;
-    this.renderer.camera.lookAt(0, 0, 0);
 
     this.animate();
   }
@@ -52,6 +49,8 @@ class Renderer extends Component {
   animate(): void {
     const animate = this.animate.bind(this)
     requestAnimationFrame(animate);
+
+    this.renderer.camera.tick();
 
     for (let child of this.renderer.scene.children) {
       if (child.constructor.name == "Mesh") {
