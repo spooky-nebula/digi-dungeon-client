@@ -7,7 +7,7 @@ import { Camera } from '../../../core/canvasmodules/camera';
 
 class Renderer extends Component {
   mount: HTMLDivElement;
-  renderer: any;
+  renderer: {[id: string]: any};
 
   constructor(props: any) {
     super(props);
@@ -66,11 +66,11 @@ class Renderer extends Component {
     Communications.mapKeeper.on("map-resync", (event) => {
       this.setUpThreeJs()
 
-      let objects = constructGeometry(event);
-
-      for (let elem of objects) {
-        this.renderer.scene.add(elem);
-      }
+      constructGeometry(event).then((objects) => {
+        for (const elem of objects) {
+          this.renderer.scene.add(elem);
+        }
+      });
     })
 
     // TODO: CONSTRUCT MAP GEOMETRY AND REPLACE THIS
