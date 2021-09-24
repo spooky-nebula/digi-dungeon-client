@@ -284,6 +284,11 @@
     rgba(112, 111, 57, 0),
     rgba(163, 145, 106, 0.05)
   );
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 .dd-gamelog {
