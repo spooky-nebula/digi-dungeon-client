@@ -284,6 +284,11 @@
     rgba(112, 111, 57, 0),
     rgba(163, 145, 106, 0.05)
   );
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 .dd-gamelog {
@@ -487,3 +492,18 @@
   text-align: center;
   padding: 8px;
 } */
+
+* {
+  padding: 0px;
+  margin: 0px;
+  font-family: sans-serif;
+
+  outline: none !important;
+}
+
+*:focus {
+  outline: none;
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none !important;
+}

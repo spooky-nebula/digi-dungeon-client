@@ -4,6 +4,7 @@ import { AppToaster } from './overlay';
 import Authentication from './commsmodules/authentication';
 import EventKeeper from './commsmodules/eventkeeper';
 import PartyKeeper from './commsmodules/partykeeper';
+import MapKeeper from './commsmodules/mapkeeper';
 import Cacher from './commsmodules/cacher';
 import Biscuits from './commsmodules/biscuits';
 
@@ -11,6 +12,7 @@ class Communications {
   public static socket: Socket;
   public static eventKeeper: EventKeeper;
   public static partyKeeper: PartyKeeper;
+  public static mapKeeper: MapKeeper;
   public static authentication: Authentication;
   public static biscuits: Biscuits;
   public static cacher: Cacher;
@@ -34,6 +36,7 @@ class Communications {
 
     this.eventKeeper = new EventKeeper();
     this.partyKeeper = new PartyKeeper();
+    this.mapKeeper = new MapKeeper();
     this.cacher = new Cacher();
 
     this.authentication = new Authentication();
@@ -111,6 +114,8 @@ class Communications {
     this.eventKeeper.init(this.socket, shardData.gamelog);
     this.partyKeeper.reset(this.socket);
     this.partyKeeper.init(this.socket, shardData.partyList);
+    this.mapKeeper.reset(this.socket);
+    this.mapKeeper.init(this.socket, shardData.map);
   }
 }
 
