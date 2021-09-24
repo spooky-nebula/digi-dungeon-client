@@ -64,6 +64,9 @@ class Renderer extends Component {
   componentDidMount(): void {
 
     Communications.mapKeeper.on("map-resync", (event) => {
+      if (this.renderer.renderer) {
+        this.mount.removeChild(this.renderer.renderer.domElement);
+      }
       this.setUpThreeJs()
 
       constructGeometry(event).then((objects) => {
