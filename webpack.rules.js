@@ -75,5 +75,12 @@ module.exports = [
         mimetype: 'application/font-woff'
       }
     }
+  },
+  {
+    test: /\.proto/i,
+    type: "asset/resource",
+    generator: {
+      filename: 'proto/[hash][ext][query]'
+    }
   }
 ];

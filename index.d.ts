@@ -3,6 +3,7 @@ declare module '*.jpg';
 declare module '*.jpeg';
 declare module '*.gif';
 declare module '*.svg';
+declare module '*.proto';
 
 declare module 'query-string' {
   export function parse(str: string): Object;
