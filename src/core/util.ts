@@ -24,9 +24,11 @@ function makeAuthRequest(
       userAuthData
     )
       .then((response) => {
-        // let auth = new AuthResponse(false, '');
-        // resolve(Object.assign(auth, responseJSON));
-        resolve(response);
+        const Message = Communications.protoRoot.lookupType("AuthResponse");
+        const decoded: {[id: string]: any} = Message.decode(JSON.parse(response).data);
+        const message = new AuthResponse(decoded.success, decoded.token, decoded.message);
+
+        resolve(message);
       })
       .catch(() => {
         reject();
