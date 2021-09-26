@@ -50,6 +50,9 @@ class App extends Component<{}, AppState> {
     Communications.authentication.on('login', (data) => {
       this.setState({ epicTimeInitiated: data.success });
     });
+    Communications.authentication.on('logout', (data) => {
+      this.setState({ epicTimeInitiated: data.success && false });
+    });
   }
 
   state = {

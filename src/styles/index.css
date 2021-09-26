@@ -1,4 +1,5 @@
 @import url('./debug.css');
+@import url("./tabs.css");
 
 @font-face {
   font-family: 'JetBrains Mono';
