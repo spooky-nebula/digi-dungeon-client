@@ -11,6 +11,12 @@ import Communications from './communications';
 
 import * as qs from 'query-string';
 
+function decodeAuthResponse(response: any): AuthResponse {
+  const Message = Communications.protoRoot.lookupType("AuthResponse");
+  const decoded: {[id: string]: any} = Message.decode(JSON.parse(response).data);
+  return new AuthResponse(decoded.success, decoded.token, decoded.message);
+}
+
 function makeAuthRequest(
   userAuthData: UserLoginData | UserRegisterData | UserLogoutData,
   path: '/login' | '/register' | '/logout'
@@ -24,14 +30,12 @@ function makeAuthRequest(
       userAuthData
     )
       .then((response) => {
-        const Message = Communications.protoRoot.lookupType("AuthResponse");
-        const decoded: {[id: string]: any} = Message.decode(JSON.parse(response).data);
-        const message = new AuthResponse(decoded.success, decoded.token, decoded.message);
-
+        const message = decodeAuthResponse(response);
         resolve(message);
       })
-      .catch(() => {
-        reject();
+      .catch((response) => {
+        const message = decodeAuthResponse(response);
+        reject(message);
       });
   });
 }
@@ -96,7 +100,7 @@ function makeRequest(
             intent: 'danger'
           });
           console.log(Buffer.concat(chunks).toString());
-          reject();
+          reject(Buffer.concat(chunks).toString());
         }
       });
     });
