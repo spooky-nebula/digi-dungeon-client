@@ -51,12 +51,12 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
   state = {
     showLogin: true,
     showMenu: true,
-    hostname: 'localhost',
-    port: '8080',
-    protocol: 'http://',
+    hostname: localStorage.getItem("hostname") || 'localhost',
+    port: localStorage.getItem("port") || '8080',
+    protocol: localStorage.getItem("protocol") || 'http://',
     //shardId: '',
     //shardPass: '',
-    username: '',
+    username: localStorage.getItem("username") || '',
     password: ''
   };
 
@@ -141,9 +141,12 @@ class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
     if (this.state.port.trim() == '') {
       return false;
     }
-    //if (this.state.shardId.trim() == '') {
-    //  return false;
-    //}
+
+    localStorage.setItem("hostname", this.state.hostname);
+    localStorage.setItem("port", this.state.port);
+    localStorage.setItem("protocol", this.state.protocol);
+    localStorage.setItem("username", this.state.username);
+
     if (this.state.showLogin) {
       this.login();
     } else {
