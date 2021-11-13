@@ -33,6 +33,7 @@ module.exports = [
       {
         loader: 'image-webpack-loader',
         options: {
+          name: 'assets/[hash].[ext]',
           mozjpeg: {
             progressive: true
           },
@@ -77,10 +78,10 @@ module.exports = [
     }
   },
   {
-    test: /\.proto/i,
-    type: "asset/resource",
+    test: /\.proto$/i,
+    type: 'asset/resource',
     generator: {
-      filename: 'proto/[hash][ext][query]'
+      filename: 'proto/[base]'
     }
   }
 ];

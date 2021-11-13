@@ -83,7 +83,7 @@ class Authentication extends EventEmitter {
         'port',
         Communications.communicationData.uri.port
       );
-      
+
       this.emit('login', response);
     });
   }
@@ -102,22 +102,24 @@ class Authentication extends EventEmitter {
   }
 
   logout(username: string, token: string): void {
-    const data = new ddapi.Auth.User.UserLogoutData(username, token);
-    makeAuthRequest(data, '/logout').then((response) => {
-      AppToaster.show({
-        message: 'Logged out',
-        intent: 'danger'
+    const data = new ddapi.Auth.User.UserLogoutData(token);
+    makeAuthRequest(data, '/logout')
+      .then((response) => {
+        AppToaster.show({
+          message: 'Logged out',
+          intent: 'danger'
+        });
+
+        this.emit('logout', response);
+        this.loggedIn = false;
+        this.token = '';
+
+        Communications.biscuits.setAuthBiscuit('loggedIn', 'false');
+        Communications.biscuits.setAuthBiscuit('token', '');
+      })
+      .catch((err) => {
+        console.log(err);
       });
-
-      this.emit('logout', response);
-      this.loggedIn = false;
-      this.token = "";
-
-      Communications.biscuits.setAuthBiscuit('loggedIn', 'false');
-      Communications.biscuits.setAuthBiscuit('token', '');
-    }).catch((err) => {
-      console.log(err);
-    });
   }
 }
 
