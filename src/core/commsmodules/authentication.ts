@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import * as ddapi from 'digi-dungeon-api';
 
-import { makeAuthRequest, makeRequest } from '../util';
+import { makeAuthRequest } from '../util';
 import Communications from '../communications';
 import { AppToaster } from '../overlay';
 
@@ -36,7 +36,7 @@ class Authentication extends EventEmitter {
     super();
   }
 
-  checkBiscuits() {
+  checkBiscuits(): void {
     this.loggedIn = Communications.biscuits.auth.loggedIn == 'true' || false;
     this.token = Communications.biscuits.auth.token || '';
 
@@ -45,8 +45,8 @@ class Authentication extends EventEmitter {
     }
   }
 
-  login(username: string, password: string) {
-    let data = new ddapi.Auth.User.UserLoginData(username, password);
+  login(username: string, password: string): void {
+    const data = new ddapi.Auth.User.UserLoginData(username, password);
     makeAuthRequest(data, '/login').then((response) => {
       if (response.success) {
         AppToaster.show({
@@ -59,8 +59,6 @@ class Authentication extends EventEmitter {
           intent: 'warning'
         });
       }
-
-      this.emit('login', response);
       this.loggedIn = response.success;
       this.token = response.token;
 
@@ -85,11 +83,13 @@ class Authentication extends EventEmitter {
         'port',
         Communications.communicationData.uri.port
       );
+
+      this.emit('login', response);
     });
   }
 
-  register(username: string, password: string) {
-    let data = new ddapi.Auth.User.UserRegisterData(username, password);
+  register(username: string, password: string): void {
+    const data = new ddapi.Auth.User.UserRegisterData(username, password);
     makeAuthRequest(data, '/register').then((response) => {
       AppToaster.show({
         message: 'Registered',
@@ -101,17 +101,25 @@ class Authentication extends EventEmitter {
     });
   }
 
-  logout(username: string, password: string) {
-    let data = new ddapi.Auth.User.UserRegisterData(username, password);
-    makeAuthRequest(data, '/logout').then((response) => {
-      AppToaster.show({
-        message: 'Logged out',
-        intent: 'danger'
-      });
+  logout(token: string): void {
+    const data = new ddapi.Auth.User.UserLogoutData(token);
+    makeAuthRequest(data, '/logout')
+      .then((response) => {
+        AppToaster.show({
+          message: 'Logged out',
+          intent: 'danger'
+        });
 
-      this.emit('logout', response);
-      this.loggedIn = false;
-    });
+        this.emit('logout', response);
+        this.loggedIn = false;
+        this.token = '';
+
+        Communications.biscuits.setAuthBiscuit('loggedIn', 'false');
+        Communications.biscuits.setAuthBiscuit('token', '');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 

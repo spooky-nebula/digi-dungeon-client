@@ -14,7 +14,7 @@ import * as qs from 'query-string';
 function makeAuthRequest(
   userAuthData: UserLoginData | UserRegisterData | UserLogoutData,
   path: '/login' | '/register' | '/logout'
-): Promise<AuthResponse> {
+): Promise<any> {
   return new Promise((resolve, reject) => {
     makeJSONRequest(
       Communications.communicationData.uri.hostname,
@@ -23,13 +23,8 @@ function makeAuthRequest(
       'POST',
       userAuthData
     )
-      .then((responseJSON) => {
-        let auth = new AuthResponse(false, '');
-        resolve(Object.assign(auth, responseJSON));
-      })
-      .catch(() => {
-        reject();
-      });
+      .then(resolve)
+      .catch(reject);
   });
 }
 
@@ -41,9 +36,9 @@ function makeJSONRequest(
   data: any
 ): Promise<Object> {
   return new Promise((resolve, reject) => {
-    makeRequest(hostname, port, path, method, data)
+    makeRawRequest(hostname, port, path, method, data)
       .then((response) => {
-        resolve(JSON.parse(response));
+        resolve(JSON.parse(response as unknown as string));
       })
       .catch(() => {
         reject();
@@ -51,13 +46,32 @@ function makeJSONRequest(
   });
 }
 
-function makeRequest(
+function makeBufferRequest(
+  hostname: string,
+  port: string,
+  path: string,
+  method: 'POST' | 'GET',
+  data: Uint8Array
+): Promise<Uint8Array> {
+  return new Promise((resolve, reject) => {
+    let sent_data = { data: data };
+    makeRequest(hostname, port, path, method, sent_data)
+      .then((response) => {
+        resolve(Buffer.from(response));
+      })
+      .catch(() => {
+        reject();
+      });
+  });
+}
+
+function makeRawRequest(
   hostname: string,
   port: string,
   path: string,
   method: 'POST' | 'GET',
   data: Object
-): Promise<string> {
+): Promise<any[]> {
   return new Promise((resolve, reject) => {
     let options = {
       host: hostname,
@@ -65,10 +79,17 @@ function makeRequest(
       path: path,
       method: method,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
         'digi-dungeon-server': 'cockalicious'
       }
     };
+
+    if (typeof data == 'object') {
+      options.headers = {
+        'Content-Type': 'application/json',
+        'digi-dungeon-server': 'cockalicious'
+      };
+    }
 
     if (method == 'GET') {
       options.path += '?' + qs.stringify(data);
@@ -81,26 +102,40 @@ function makeRequest(
       });
       response.on('end', () => {
         if (response.statusCode == 200) {
-          const result = Buffer.concat(chunks).toString();
-          // Factories bruh
-          //let factory = new Factory<T>(T);
-          //let auth: T = factory.getNew();
-          //resolve(Object.assign(auth, JSON.parse(result)));
-          resolve(result);
+          resolve(chunks);
         } else {
           AppToaster.show({
             message: 'A request unsuccessful, check console for details',
             intent: 'danger'
           });
-          console.log(Buffer.concat(chunks).toString());
-          reject();
+          reject(chunks);
         }
       });
     });
 
-    req.write(JSON.stringify(data));
+    if (typeof data == 'object') {
+      req.write(JSON.stringify(data));
+    } else {
+      req.write(data);
+    }
 
     req.end();
+  });
+}
+
+function makeRequest(
+  hostname: string,
+  port: string,
+  path: string,
+  method: 'POST' | 'GET',
+  data: Object
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    makeRawRequest(hostname, port, path, method, data)
+      .then((chunks) => {
+        resolve(Buffer.concat(chunks).toString());
+      })
+      .catch((chunks) => reject(Buffer.concat(chunks).toString()));
   });
 }
 

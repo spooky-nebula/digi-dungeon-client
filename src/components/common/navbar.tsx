@@ -1,5 +1,6 @@
-import { Tooltip } from '@blueprintjs/core';
+import { Tooltip, Button } from '@blueprintjs/core';
 import React, { Component } from 'react';
+import Communications from '../../core/communications';
 
 interface NavBarProps {
   onChange: (newTab: string) => void;
@@ -9,6 +10,7 @@ interface NavBarProps {
 
 interface NavBarState {
   currentTab: string;
+  loggedIn: boolean;
 }
 
 interface NavBarTab {
@@ -25,7 +27,8 @@ class NavBar extends Component<NavBarProps, NavBarState> {
   }
 
   state = {
-    currentTab: this.props.initialTab
+    currentTab: this.props.initialTab,
+    loggedIn: Communications.authentication.loggedIn
   };
 
   changeHandler(newTab: string) {
@@ -33,8 +36,23 @@ class NavBar extends Component<NavBarProps, NavBarState> {
     this.props.onChange(newTab);
   }
 
+  componentDidMount(): void {
+    Communications.authentication.on('login', () => {
+      this.setState({ loggedIn: Communications.authentication.loggedIn });
+    });
+    Communications.authentication.on('logout', () => {
+      this.setState({ loggedIn: Communications.authentication.loggedIn });
+    });
+  }
+
+  logout(): void {
+    Communications.authentication.logout(Communications.authentication.token);
+  }
+
   render() {
     const { tabs } = this.props;
+    const loggedIn = this.state.loggedIn;
+
     return (
       <div className='dd-tablist'>
         {tabs.map((tab) => {
@@ -61,6 +79,15 @@ class NavBar extends Component<NavBarProps, NavBarState> {
             </Tooltip>
           );
         })}
+        {loggedIn && (
+          <Button
+            className='logout'
+            text='Logout'
+            icon='log-out'
+            type='button'
+            onClick={() => this.logout()}
+          />
+        )}
       </div>
     );
   }
