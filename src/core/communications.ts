@@ -7,6 +7,7 @@ import PartyKeeper from './commsmodules/partykeeper';
 import MapKeeper from './commsmodules/mapkeeper';
 import Cacher from './commsmodules/cacher';
 import Biscuits from './commsmodules/biscuits';
+import { ProtoBufCringe, PackedSocketData } from 'digi-dungeon-protobuf';
 
 class Communications {
   public static socket: Socket;
@@ -66,19 +67,31 @@ class Communications {
 
     this.socket.on('connect', () => {
       if (this.authentication.loggedIn) {
-        this.socket.emit('handshake', {
+        let data = {
           token: this.authentication.token,
           shardID: this.communicationData.shard.id
-        } as ddapi.Auth.Handshake.HandshakeData);
+        } as ddapi.Auth.Handshake.HandshakeData;
+        let type = 'dd.auth.HandshakeData';
+        ProtoBufCringe.encode_request(data, type).then((packed) => {
+          let handshake_data = {
+            type: 'dd.auth.HandshakeData',
+            body: packed
+          };
+          this.socket.emit('handshake', handshake_data);
+        });
       }
     });
 
-    this.socket.on('handshake-ack', (syncData: ddapi.Shard.SimpleShardData) => {
-      AppToaster.show({ message: 'Connected to Shard', intent: 'success' });
+    this.socket.on('handshake-ack', (syncData: PackedSocketData) => {
+      ProtoBufCringe.unpack_data<ddapi.Auth.Handshake.HandshakeResponseData>(
+        syncData
+      ).then((syncData) => {
+        AppToaster.show({ message: 'Connected to Shard', intent: 'success' });
 
-      this.resetKeepers(syncData);
+        this.resetKeepers(syncData.shardData);
 
-      this.biscuits.setSocketBiscuit('connected', 'true');
+        this.biscuits.setSocketBiscuit('connected', 'true');
+      });
     });
 
     this.socket.on('handshake-error', (errorMessage: string) => {
@@ -105,6 +118,14 @@ class Communications {
         intent: 'primary'
       });
     });
+  }
+
+  static emitBoardEvent(eventData: ddapi.Event.default, type: string) {
+    Communications.eventKeeper.emitBoardEvent(
+      Communications.socket,
+      eventData,
+      type
+    );
   }
 
   private static resetKeepers(

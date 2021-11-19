@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import * as ddapi from 'digi-dungeon-api';
 
 import { Socket } from 'socket.io-client';
-import Communications from '../communications';
+import { ProtoBufCringe, PackedSocketData } from 'digi-dungeon-protobuf';
 
 interface EventKeeperEvents {
   'force-reset': () => void;
@@ -82,6 +82,20 @@ class EventKeeper extends EventEmitter {
       this.decideAndEmit(eventData);
       this.recordedEvents.push(eventData);
     }
+  }
+
+  public emitBoardEvent(
+    socket: Socket,
+    eventData: ddapi.Event.default,
+    type: string
+  ) {
+    ProtoBufCringe.encode_request(eventData, type).then((packed) => {
+      let data = {
+        type: type,
+        body: packed
+      } as PackedSocketData;
+      socket.emit('board-event', data);
+    });
   }
 
   private decideAndEmit(eventData: ddapi.Event.default) {

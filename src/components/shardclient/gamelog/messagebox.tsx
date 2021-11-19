@@ -71,7 +71,7 @@ class MessageBox extends Component<MessageBoxProps, MessageBoxState> {
     let event = new ddapi.Event.ChatMessageEvent(Communications.socket.id);
     event.text = text;
 
-    Communications.socket.emit('board-event', event);
+    Communications.emitBoardEvent(event, 'dd.event.ChatMessageEvent');
 
     Communications.socket.once('board-event-sent', () => {
       this.clear();

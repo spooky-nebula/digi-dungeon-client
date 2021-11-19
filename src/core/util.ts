@@ -9,7 +9,7 @@ import {
 } from 'digi-dungeon-api/dist/auth/userdata';
 import Communications from './communications';
 
-import ProtoBufCringe from 'digi-dungeon-protobuf';
+import { ProtoBufCringe, PackedSocketData } from 'digi-dungeon-protobuf';
 import * as qs from 'query-string';
 
 function makeAuthRequest(

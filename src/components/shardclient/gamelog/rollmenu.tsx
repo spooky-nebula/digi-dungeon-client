@@ -115,7 +115,10 @@ class RollMenu extends Component<RollMenuProps, RollMenuState> {
     diceRequestEvent.roll.dieType = this.state.selectedDie;
     diceRequestEvent.roll.modifier = this.state.modifier;
 
-    Communications.socket.emit('board-event', diceRequestEvent);
+    Communications.emitBoardEvent(
+      diceRequestEvent,
+      'dd.event.DiceRollRequestEvent'
+    );
 
     //Communications.socket.once('board-event-sent', () => {
     //  AppToaster.show({ message: 'Rolled' });
